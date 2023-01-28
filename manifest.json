@@ -1,0 +1,25 @@
+{
+  "name": "Wordle Helper",
+  "description": "Blocks the user from typing mistakes in Wordle",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["tabs", "scripting"],
+  "host_permissions": [
+    "https://www.nytimes.com/games/wordle/index.html"
+  ],
+  "action": {
+    "default_icon": {
+      "192": "/images/icon192.png"
+    }
+  },
+  "icons": {
+    "192": "/images/icon192.png"
+  },
+  "content_scripts": [{
+    "matches": ["https://www.nytimes.com/games/wordle/index.html"],
+    "js": ["script.js"]
+  }]
+}
