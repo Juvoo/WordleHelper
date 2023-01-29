@@ -3,9 +3,6 @@
   "description": "Blocks the user from typing mistakes in Wordle",
   "version": "1.0",
   "manifest_version": 3,
-  "background": {
-    "service_worker": "background.js"
-  },
   "permissions": ["tabs", "scripting"],
   "host_permissions": [
     "https://www.nytimes.com/games/wordle/index.html"
@@ -20,6 +17,12 @@
   },
   "content_scripts": [{
     "matches": ["https://www.nytimes.com/games/wordle/index.html"],
-    "js": ["script.js"]
-  }]
+    "js": ["script.js"],
+    "all_frames": true
+  }],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "wordlehelper"
+    }
+  }
 }

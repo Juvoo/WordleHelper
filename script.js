@@ -5,25 +5,58 @@ function getUsedLetters() {
     for (let i = 0; i < tiles.length; i++) {
         let tile = tiles[i]
         if (tile.dataset.state.toString() === 'absent') {
-            usedLetters.push(tiles[i].innerText)
-            console.log('letter is already used: ' + tiles[i].innerText)
+            if (tiles[i].innerText === null) break
+            usedLetters.push(tiles[i].innerText.toLowerCase())
         }
     }
     return usedLetters
 }
 
-let tiles = document.getElementsByClassName('Tile-module_tile__UWEHN')
-console.log(tiles.length)
-
-for (let i = 0; i < tiles.length; i++) {
-    let tile = tiles[i]
-
-    tile.addEventListener("DOMAttrModified", function (event) {
-        console.log(tile.innerText)
-        if (getUsedLetters().includes(tile.innerText)) {
-            console.log('new letter: ' + tile.innerText + ', used letters: ' + getUsedLetters())
-            event.stopImmediatePropagation()
+function pressBackspace() {
+    let buttons = document.getElementsByClassName('Key-module_key__kchQI Key-module_oneAndAHalf__bq8Tw')
+    for (let i = 0; i < buttons.length; i++) {
+        let button = buttons[i]
+        if (button.getAttribute('data-key') === '←') {
+            button.click()
         }
-    }, false)
-    console.log('added event listener')
+    }
 }
+
+function observeTileElements() {
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === 'aria-label') {
+                console.log(mutation.oldValue + ' ' + mutation.target.ariaLabel)
+                if (mutation.oldValue !== mutation.target.ariaLabel) {
+                    if (getUsedLetters().includes(mutation.target.ariaLabel)) {
+                        pressBackspace()
+                    }
+                }
+            }
+        })
+    })
+
+    const targetElements = document.getElementsByClassName('Tile-module_tile__UWEHN')
+
+    for (let i = 0; i < targetElements.length; i++) {
+        observer.observe(targetElements[i], {
+            attributes: true,
+            characterData: false,
+            childList: false,
+            subtree: false,
+            attributeOldValue: true,
+            characterDataOldValue: false
+        })
+    }
+}
+
+function tileElementsLoaded() {
+    return document.getElementsByClassName('Tile-module_tile__UWEHN').length !== 0
+}
+
+const timer = setInterval(() => {
+    if (tileElementsLoaded()) {
+        clearTimeout(timer);
+        observeTileElements()
+    }
+}, 1)
