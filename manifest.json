@@ -1,7 +1,7 @@
 {
   "name": "Wordle Helper",
   "description": "Blocks the user from typing mistakes in Wordle",
-  "version": "1.0",
+  "version": "1.0.1",
   "manifest_version": 3,
   "permissions": ["tabs", "scripting"],
   "host_permissions": [

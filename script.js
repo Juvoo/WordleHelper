@@ -26,9 +26,8 @@ function observeTileElements() {
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             if (mutation.attributeName === 'aria-label') {
-                console.log(mutation.oldValue + ' ' + mutation.target.ariaLabel)
-                if (mutation.oldValue !== mutation.target.ariaLabel) {
-                    if (getUsedLetters().includes(mutation.target.ariaLabel)) {
+                if (mutation.oldValue !== mutation.target.getAttribute('aria-label')) {
+                    if (getUsedLetters().includes(mutation.target.getAttribute('aria-label'))) {
                         pressBackspace()
                     }
                 }
