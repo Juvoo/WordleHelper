@@ -3,15 +3,36 @@ function getUsedLetters() {
     // Get tiles in game board
     let tiles = document.getElementsByClassName('Tile-module_tile__UWEHN')
     let usedLetters = []
+    let presentLetters = []
 
-    // Iterate through tiles and if marked as absent, add to used letters array
+    // Iterate through tiles to get present letters
     for (let i = 0; i < tiles.length; i++) {
         let tile = tiles[i]
-        if (tile.dataset.state.toString() === 'absent') {
-            if (tiles[i].innerText === null) break
-            usedLetters.push(tiles[i].innerText.toLowerCase())
+
+        if (tile.innerText === null || tile.innerText === '') break
+
+        // Get letter of tile
+        let letter = tile.innerText.toLowerCase()
+        // If tile is not in absent state or tbd state add to presentLetters
+        if (tile.dataset.state.toString() !== 'absent' && tile.dataset.state.toString() !== 'tbd') {
+            presentLetters.push(letter)
         }
     }
+
+    // Iterate through tiles to get used letters
+    for (let i = 0; i < tiles.length; i++) {
+        let tile = tiles[i]
+
+        if (tile.innerText === null || tile.innerText === '') break
+
+        // Get letter of tile
+        let letter = tile.innerText.toLowerCase()
+        // If tile is in absent state and presentLetters doesn't include the letter add to used letters
+        if (tile.dataset.state.toString() === 'absent' && !presentLetters.includes(letter)) {
+            usedLetters.push(letter)
+        }
+    }
+
     return usedLetters
 }
 
@@ -34,7 +55,7 @@ function observeTileElements() {
                 // If aria label has changed
                 if (mutation.oldValue !== mutation.target.getAttribute('aria-label')) {
                     // If used letters contains current letter in tile, delete letter
-                    if (getUsedLetters().includes(mutation.target.getAttribute('aria-label'))) {
+                    if (getUsedLetters().includes(mutation.target.innerText.toString().toLowerCase())) {
                         pressBackspace()
                     }
                 }

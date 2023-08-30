@@ -1,9 +1,8 @@
 {
   "name": "Wordle Helper",
-  "description": "Blocks the user from typing mistakes in Wordle",
-  "version": "1.0.1",
+  "description": "Blocks the user from typing letters marked as absent from the solution in Wordle.",
+  "version": "1.0.0",
   "manifest_version": 3,
-  "permissions": ["tabs", "scripting"],
   "host_permissions": [
     "https://www.nytimes.com/games/wordle/index.html"
   ],
@@ -13,16 +12,14 @@
     }
   },
   "icons": {
+    "16": "/images/icon192.png",
+    "48": "/images/icon192.png",
+    "128": "/images/icon192.png",
     "192": "/images/icon192.png"
   },
-  "content_scripts": [{
+  "content_scripts": [ {
     "matches": ["https://www.nytimes.com/games/wordle/index.html"],
     "js": ["script.js"],
     "all_frames": true
-  }],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "kinghouser@wordlehelper.co"
-    }
-  }
+  }]
 }
